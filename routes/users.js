@@ -10,7 +10,6 @@ router.post('/', async (req, res, next) => {
   try {
     const isUser = await User.findOne({ username });
     if (isUser) {
-      // res.status(422).json(isUser);
       next(createError(422));
     } else {
       var salt = bcrypt.genSaltSync(10);
@@ -19,10 +18,11 @@ router.post('/', async (req, res, next) => {
         username,
         password: hash,
       });
+      const { _id: id } = user;
+      req.session.currentUser = id;
       res.status(200).json(user);
     }
   } catch (error) {
-    // res.status(404).json(error);
     next(createError(404));
   }
 });

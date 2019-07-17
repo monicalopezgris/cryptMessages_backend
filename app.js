@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/users');
@@ -24,6 +26,21 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .catch((error) => {
     console.log(error);
   });
+
+app.use(
+  session({
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 24 * 60 * 60, // 1 day
+    }),
+    secret: process.env.SECRET_SESSION,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  }),
+);
 
 app.use('/', indexRouter);
 app.use('/api/auth', authRouter);
