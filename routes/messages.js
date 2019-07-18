@@ -12,6 +12,7 @@ const {
   encrypt,
   decrypt,
   getJump,
+  crcToDec,
 } = require('../helpers/crypt');
 
 router.post(
@@ -31,10 +32,12 @@ router.post(
           author: currentUser
         })
         // Encrypt
-        message = await encrypt(message, getJump(messageHisto, decrypt))
+        const crc = crcToDec(message)
+        message = await encrypt(message, getJump(messageHisto, decrypt, crcToDec))
         const resMessage = await Message.create({
           author: currentUser,
-          message
+          message,
+          crc
         })
         res.status(200).json(resMessage)
       } else {

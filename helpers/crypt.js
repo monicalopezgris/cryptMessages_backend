@@ -60,7 +60,7 @@ const cesarDecrypt = (item, jump) => {
 
 // Get sum of the crc from the decrypted messages of the history array
 // The result is the jump for the cesarEncrypt
-exports.getJump = (history, decrypt) => {
+exports.getJump = (history, decrypt, crcToDec) => {
   if (history.length > 0) {
     const arrayCrcs = history.map(({ message }) => {
       const test = decrypt(message)
@@ -79,7 +79,7 @@ exports.getJump = (history, decrypt) => {
   }
 }
 
-const crcToDec = text => {
+exports.crcToDec = text => {
   const hex = crc.crc8(Buffer.from(text, 'utf8')).toString('hex');
   const dec = hexToDec(hex)
   return dec;

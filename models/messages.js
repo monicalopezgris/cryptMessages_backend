@@ -9,6 +9,7 @@ const messageSchema = new Schema({
     ref: 'User',
   },
   message: String,
+  crc: Number,
 });
 
 const Message = mongoose.model('Message', messageSchema);
