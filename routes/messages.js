@@ -32,8 +32,9 @@ router.post(
           author: currentUser
         })
         // Encrypt
-        const crc = crcToDec(message)
-        message = await encrypt(message, getJump(messageHisto, decrypt, crcToDec))
+        const crc = crcToDec(message);
+        const jump = getJump(messageHisto);
+        message = await encrypt(message, jump)
         const resMessage = await Message.create({
           author: currentUser,
           message,
