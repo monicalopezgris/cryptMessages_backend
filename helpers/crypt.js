@@ -59,11 +59,18 @@ const cesarDecrypt = (item, jump) => {
 }
 
 // Get sum of the crc from the decrypted messages of the history array
-exports.getCrc = history => {
+// The result is the jump for the cesarEncrypt
+exports.getJump = history => {
   const arrayCrcs = history.map(({ message }) => {
     return Number(crcToDec(decrypt(message)));
   });
   let total = arrayCrcs.reduce((a, b) => a + b);
+  //Round
+  if (total > 26) {
+    const decimal = total / 26;
+    const minified = decimal - Math.floor(decimal)
+    total = Math.round(minified * 10);
+  }
   return total;
 }
 
