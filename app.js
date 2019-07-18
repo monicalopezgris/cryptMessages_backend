@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/users');
+const messageRouter = require('./routes/messages')
 
 require('dotenv').config()
 const app = express();
@@ -44,6 +45,7 @@ app.use(
 
 app.use('/', indexRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/message', messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -4,8 +4,14 @@ const bcrypt = require('bcrypt');
 const User = require('../models/users')
 const router = express.Router();
 
+const {
+  secured,
+  anon,
+} = require('../middlewares/auth');
+
 router.post(
   '/signup',
+  anon,
   async (req, res, next) => {
     const { username, password } = req.body;
     try {
