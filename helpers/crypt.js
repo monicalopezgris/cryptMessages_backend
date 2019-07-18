@@ -1,4 +1,4 @@
-const { crc8 } = require('crc');
+const crc = require('node-crc');
 const { hexToDec } = require('hex2dec');
 
 const minLimit = 97;
@@ -19,7 +19,7 @@ exports.encrypt = (text, jump) => {
   return (arrayEncrypted.join(''))
 }
 
-const decrypt = (text, jump) => {
+exports.decrypt = (text, jump) => {
   const arrayDecrypted = [];
   const textSplited = text.split('');
   textSplited.forEach((item) => {
@@ -60,22 +60,27 @@ const cesarDecrypt = (item, jump) => {
 
 // Get sum of the crc from the decrypted messages of the history array
 // The result is the jump for the cesarEncrypt
-exports.getJump = history => {
-  const arrayCrcs = history.map(({ message }) => {
-    return Number(crcToDec(decrypt(message)));
-  });
-  let total = arrayCrcs.reduce((a, b) => a + b);
-  //Round
-  if (total > 26) {
-    const decimal = total / 26;
-    const minified = decimal - Math.floor(decimal)
-    total = Math.round(minified * 10);
+exports.getJump = (history, decrypt) => {
+  if (history.length > 0) {
+    const arrayCrcs = history.map(({ message }) => {
+      const test = decrypt(message)
+      return Number(crcToDec(test));
+    });
+    let total = arrayCrcs.reduce((a, b) => a + b);
+    //Round
+    if (total > 26) {
+      const decimal = total / 26;
+      const minified = decimal - Math.floor(decimal)
+      total = Math.round(minified * 10);
+    }
+    return total;
+  } else {
+    return 0;
   }
-  return total;
 }
 
 const crcToDec = text => {
-  const hex = crc8(text).toString(16);
+  const hex = crc.crc8(Buffer.from(text, 'utf8')).toString('hex');
   const dec = hexToDec(hex)
   return dec;
 }

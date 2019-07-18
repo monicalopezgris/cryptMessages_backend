@@ -10,6 +10,7 @@ const {
 } = require('../middlewares/auth');
 const {
   encrypt,
+  decrypt,
   getJump,
 } = require('../helpers/crypt');
 
@@ -30,7 +31,7 @@ router.post(
           author: currentUser
         })
         // Encrypt
-        message = await encrypt(message, getJump(messageHisto))
+        message = await encrypt(message, getJump(messageHisto, decrypt))
         const resMessage = await Message.create({
           author: currentUser,
           message
@@ -43,6 +44,30 @@ router.post(
       next(createError(404))
     }
   })
+
+router.get(
+  '/',
+  secured,
+  async (req, res, next) => {
+    const { currentUser } = req.session;
+    const messages = await Message.find({
+      author: currentUser,
+    })
+    res.status(200).json(messages)
+  }
+);
+
+router.post(
+  '/delete',
+  secured,
+  async (req, res, next) => {
+    const { currentUser } = req.session;
+    const messages = await Message.deleteMany({
+      author: currentUser,
+    })
+    res.status(200);
+  }
+);
 
 
 module.exports = router;
