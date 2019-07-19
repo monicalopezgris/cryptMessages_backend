@@ -20,11 +20,13 @@ exports.encrypt = (text, jump) => {
 }
 
 exports.decrypt = (text, jump) => {
+  const { message: { message } } = text;
   const arrayDecrypted = [];
-  const textSplited = text.split('');
+  const textSplited = message.split('');
   textSplited.forEach((item) => {
     if (isAlpha(item, regexRule)) {
-      arrayDecrypted.push(cesarDecrypt(item, jump));
+      const itemDecrypted = cesarDecrypt(item, jump)
+      arrayDecrypted.push(itemDecrypted);
     } else {
       arrayDecrypted.push(item);
     }
@@ -50,44 +52,37 @@ const cesarEncrypt = (item, jump) => {
 
 const cesarDecrypt = (item, jump) => {
   let itemChar = (item.charCodeAt(0));
-  if (itemChar <= minLimit) {
-    if ((itemChar + jump) < minLimit) {
-      itemChar = minLimit + (itemChar - maxLimit) + jump - 1;
-      return String.fromCharCode(itemChar);
-    } else {
-      return String.fromCharCode(itemChar + jump);
-    }
+  // if (itemChar <= minLimit) {
+  if ((itemChar - jump) < minLimit) {
+    const newChar = maxLimit + ((itemChar - (jump - 1) - minLimit))
+    return String.fromCharCode(newChar);
+  } else {
+    return String.fromCharCode(itemChar - jump);
   }
-
-  let character = (item.charCodeAt(0) - jump);
-  if (character <= maxLimit) {
-    if (character < minLimit) {
-      const resto = minLimit - character;
-      character = maxLimit - resto;
-    }
-    return String.fromCharCode(character);
-  }
+  // }
 }
 
 // Get sum of the crc from the decrypted messages of the history array
 // The result is the jump for the cesarEncrypt
-exports.getJump = (history) => {
+exports.getJumpFinal = (history, getJump) => {
   if (history.length > 0) {
     let total = 0;
     history.forEach(({ crc }) => {
       total = total + crc;
     });
-    //Get jump
-    let lastRound = 0;
-    if (total > 26) {
-      const completeRounds = Math.trunc(total / 26);
-      lastRound = 26 * completeRounds;
-      total = total - lastRound;
-    }
-    return total;
+    return getJump(total)
   } else {
     return 0;
   }
+}
+exports.getJump = (crc) => {
+  let lastRound = 0;
+  if (crc > 26) {
+    const completeRounds = Math.trunc(crc / 26);
+    lastRound = 26 * completeRounds;
+    crc = crc - lastRound;
+  }
+  return crc;
 }
 
 exports.crcToDec = text => {
