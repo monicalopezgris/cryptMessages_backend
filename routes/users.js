@@ -11,7 +11,6 @@ const {
 
 router.post(
   '/signup',
-  anon,
   async (req, res, next) => {
     const { username, password } = req.body;
     try {
@@ -57,10 +56,22 @@ router.post(
 
 router.post(
   '/logout',
+  secured,
   (req, res, next) => {
     try {
       req.session.destroy();
       return res.status(204).send();
+    } catch (error) {
+      next(createError(404))
+    }
+  });
+
+router.get('/me',
+  // isLoggedIn(),
+  (req, res, next) => {
+    console.log('hiiii')
+    try {
+      res.json(req.session.currentUser);
     } catch (error) {
       next(createError(404))
     }

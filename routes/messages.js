@@ -13,6 +13,7 @@ const {
   decrypt,
   getJump,
   crcToDec,
+  getJumpFinal,
 } = require('../helpers/crypt');
 
 router.post(
@@ -33,7 +34,7 @@ router.post(
         })
         // Encrypt
         const crc = crcToDec(message);
-        const jump = getJump(messageHisto);
+        const jump = getJumpFinal(messageHisto, getJump);
         message = await encrypt(message, jump)
         const resMessage = await Message.create({
           author: currentUser,
@@ -53,11 +54,28 @@ router.get(
   '/',
   secured,
   async (req, res, next) => {
-    const { currentUser } = req.session;
-    const messages = await Message.find({
-      author: currentUser,
-    })
-    res.status(200).json(messages)
+    try {
+      const { currentUser } = req.session;
+      // Get messages from user
+      const messages = await Message.find({
+        author: currentUser,
+      })
+      // Decrypt
+      const decryptedMessages = await messages.map((message, index) => {
+        const messageHisto = messages.slice(0, index)
+        let totalCrc = 0;
+        messageHisto.forEach(({ crc }) => {
+          totalCrc = totalCrc + crc
+        });
+        const jump = getJump(totalCrc)
+        if (jump > 0) {
+          return decrypt({ message }, jump)
+        }
+      })
+      res.status(200).json(decryptedMessages)
+    } catch (error) {
+      next(createError(404))
+    }
   }
 );
 

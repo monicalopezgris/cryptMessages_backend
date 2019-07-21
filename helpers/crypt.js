@@ -40,7 +40,7 @@ const isAlpha = (item, ruleToCompare) => {
 
 const cesarEncrypt = (item, jump) => {
   let itemChar = (item.charCodeAt(0));
-  if (itemChar >= minLimit) {
+  if (itemChar >= minLimit && itemChar <= maxLimit) {
     if ((itemChar + jump) > maxLimit) {
       const newChar = minLimit + (itemChar - maxLimit) + jump - 1;
       return String.fromCharCode(newChar);
@@ -52,14 +52,14 @@ const cesarEncrypt = (item, jump) => {
 
 const cesarDecrypt = (item, jump) => {
   let itemChar = (item.charCodeAt(0));
-  // if (itemChar <= minLimit) {
-  if ((itemChar - jump) < minLimit) {
-    const newChar = maxLimit + ((itemChar - (jump - 1) - minLimit))
-    return String.fromCharCode(newChar);
-  } else {
-    return String.fromCharCode(itemChar - jump);
+  if (itemChar >= minLimit && itemChar <= maxLimit) {
+    if ((itemChar - jump) < minLimit) {
+      const newChar = maxLimit + ((itemChar - (jump - 1) - minLimit))
+      return String.fromCharCode(newChar);
+    } else {
+      return String.fromCharCode(itemChar - jump);
+    }
   }
-  // }
 }
 
 // Get sum of the crc from the decrypted messages of the history array
