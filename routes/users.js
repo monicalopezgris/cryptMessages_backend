@@ -8,9 +8,14 @@ const {
   secured,
   anon,
 } = require('../middlewares/auth');
+const {
+  auth,
+} = require('../middlewares/verification');
 
 router.post(
   '/signup',
+  anon,
+  auth,
   async (req, res, next) => {
     const { username, password } = req.body;
     try {
@@ -35,6 +40,8 @@ router.post(
 
 router.post(
   '/login',
+  anon,
+  auth,
   async (req, res, next) => {
     const { username, password } = req.body;
     try {
@@ -67,9 +74,8 @@ router.post(
   });
 
 router.get('/me',
-  // isLoggedIn(),
+  secured,
   (req, res, next) => {
-    console.log('hiiii')
     try {
       res.json(req.session.currentUser);
     } catch (error) {

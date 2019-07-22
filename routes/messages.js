@@ -9,6 +9,9 @@ const {
   secured,
 } = require('../middlewares/auth');
 const {
+  message,
+} = require('../middlewares/verification')
+const {
   encrypt,
   decrypt,
   getJump,
@@ -19,14 +22,15 @@ const {
 router.post(
   '/',
   secured,
+  message,
   async (req, res, next) => {
     try {
-      let { message } = req.body;
+      let { data: message } = req.body;
       const { currentUser } = req.session;
       const user = await User.findById(currentUser)
       if (
-        user !== null
-        || user.length <= 0
+        user !== null ||
+        user.length <= 0
       ) {
         // Get messages from user
         const messageHisto = await Message.find({
