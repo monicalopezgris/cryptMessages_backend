@@ -7,13 +7,13 @@ Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
 ### To use the API on deploy
 
-https://<publicurl>/api
+https://publicurl/api
 
 ### Login
-https://<publicurl>/api/auth/login
+https://publicurl/api/auth/login
 ### Signup
-https://<publicurl>/api/auth/signup
+https://publicurl/api/auth/signup
 ### Get messages
-https://<publicurl>/api/message
+https://publicurl/api/message
 ### Post messages
-https://<publicurl>/api/message
+https://publicurl/api/message
