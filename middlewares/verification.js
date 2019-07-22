@@ -5,9 +5,9 @@ module.exports = {
     if (
       req.body === null ||
       req.body === undefined ||
-      req.body.username.length <= 3 ||
+      req.body.username.length <= 2 ||
       req.body.username === null ||
-      req.body.password.length <= 3) {
+      req.body.password.length <= 2) {
       next(createError(400));
     } else {
       next();
