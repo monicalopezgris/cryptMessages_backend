@@ -10,7 +10,7 @@ const {
 } = require('../middlewares/auth');
 const {
   message,
-} = require('../middlewares/verification')
+} = require('../middlewares/verification');
 const {
   encrypt,
   decrypt,
