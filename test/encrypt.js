@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 const assert = require('assert');
+const chai = require('chai');
+const expect = require('chai').expect;
 const crypt = require('../helpers/crypt');
 
 describe('Encryptation tests', () => {
@@ -30,3 +32,15 @@ describe('Decryptation tests', () => {
     })
   })
 })
+
+describe('Test login ', () => {
+  it('should return a json user', () => {
+    chai.request(url)
+      .post('/login')
+      .send({ username: 'admin', password: 'admin' })
+      .end(function (err, res) {
+        console.log(res.body)
+        expect(res).to.have.status(200);
+      });
+  });
+});
