@@ -11,6 +11,7 @@ const url = 'http://localhost:5000/api';
 describe('Test #auth ', () => {
   const userCredentials = { username: 'admin', password: 'admin' }
   const wrongUserCredentials = { username: 'admin', password: 'aaas' }
+  const nonExistUser = { username: 'nonExist', password: 'aaas' }
 
   it('should return 200 on LOGIN', (done) => {
     chai
@@ -29,6 +30,16 @@ describe('Test #auth ', () => {
       .send(wrongUserCredentials)
       .end((err, res) => {
         expect(res).to.have.status(401);
+      });
+    done();
+  });
+  it('should return 404 on non existing user on LOGIN', (done) => {
+    chai
+      .request(url)
+      .post('/auth/login')
+      .send(nonExistUser)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
       });
     done();
   });
