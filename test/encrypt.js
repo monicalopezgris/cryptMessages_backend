@@ -10,6 +10,7 @@ const url = 'http://localhost:5000/api';
 
 describe('Test #auth ', () => {
   const userCredentials = { username: 'admin', password: 'admin' }
+  const wrongUserCredentials = { username: 'admin', password: 'aaas' }
 
   it('should return 200 on LOGIN', (done) => {
     chai
@@ -18,6 +19,16 @@ describe('Test #auth ', () => {
       .send(userCredentials)
       .end((err, res) => {
         expect(res).to.have.status(200);
+      });
+    done();
+  });
+  it('should return 401 on existing user but bad password on LOGIN', (done) => {
+    chai
+      .request(url)
+      .post('/auth/login')
+      .send(wrongUserCredentials)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
       });
     done();
   });
