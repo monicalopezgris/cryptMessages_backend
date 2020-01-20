@@ -84,11 +84,25 @@ router.get(
 );
 
 router.post(
-  '/delete',
+  '/deleteAll',
   secured,
   async (req, res, next) => {
     const { currentUser } = req.session;
     const messages = await Message.deleteMany({
+      author: currentUser,
+    })
+    res.status(200);
+  }
+);
+
+router.post(
+  '/:id/delete',
+  secured,
+  async (req, res, next) => {
+    const { id } = req.params;
+    const { currentUser } = req.session;
+    const message = await Message.deleteOne({
+      _id: id,
       author: currentUser,
     })
     res.status(200);
