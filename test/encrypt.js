@@ -9,9 +9,18 @@ chai.use(chaiHttp);
 const url = 'http://localhost:5000/api';
 
 describe('Test #auth ', () => {
-  const userCredentials = { username: 'admin', password: 'admin' }
-  const wrongUserCredentials = { username: 'admin', password: 'aaas' }
-  const nonExistUser = { username: 'nonExist', password: 'aaas' }
+  const userCredentials = {
+    username: process.env.TEST_LOGIN_USER,
+    password: process.env.TEST_LOGIN_PASS
+  }
+  const wrongUserCredentials = {
+    username: process.env.TEST_LOGIN_USER,
+    password: 'wrongPass'
+  }
+  const nonExistUser = {
+    username: 'nonExist',
+    password: 'nonExist'
+  }
 
   it('should return 200 on LOGIN', (done) => {
     chai
