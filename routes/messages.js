@@ -96,5 +96,18 @@ router.post(
   }
 );
 
+router.post(
+  '/delete',
+  secured,
+  async (req, res, next) => {
+    const { id } = req.params;
+    const { currentUser } = req.session;
+    const message = await Message.deleteMany({
+      author: currentUser,
+    })
+    res.status(200);
+  }
+);
+
 
 module.exports = router;
