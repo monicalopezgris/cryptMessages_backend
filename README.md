@@ -4,8 +4,8 @@
 
 Runs the app in the development mode.<br>
 
-DEMO credentials:
-user: admin
+DEMO credentials:<br>
+user: admin<br>
 pass: admin
 
 ### To use the API on development
