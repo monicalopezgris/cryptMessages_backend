@@ -1,4 +1,3 @@
-
 const express = require('express');
 const createError = require('http-errors');
 const Message = require('../models/messages')
@@ -80,18 +79,6 @@ router.get(
     } catch (error) {
       next(createError(404))
     }
-  }
-);
-
-router.post(
-  '/deleteAll',
-  secured,
-  async (req, res, next) => {
-    const { currentUser } = req.session;
-    const messages = await Message.deleteMany({
-      author: currentUser,
-    })
-    res.status(200);
   }
 );
 
