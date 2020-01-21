@@ -3,17 +3,28 @@
 ### `npm run dev`
 
 Runs the app in the development mode.<br>
-Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+
+DEMO credentials:
+user: admin
+pass: admin
+
+### To use the API on development
+
+http://localhost:5000/api
 
 ### To use the API on deploy
 
-https://publicurl/api
+https://cryptocesar.herokuapp.com/api
 
 ### Login
-https://publicurl/api/auth/login
+https://cryptocesar.herokuapp.com/api/auth/login
 ### Signup
-https://publicurl/api/auth/signup
+https://cryptocesar.herokuapp.com/api/auth/signup
 ### Get messages
-https://publicurl/api/message
+https://cryptocesar.herokuapp.com/api/message
 ### Post messages
-https://publicurl/api/message
+https://cryptocesar.herokuapp.com/api/message
+### Delete all of the user's messages
+https://cryptocesar.herokuapp.com/api/message
+### Delete one message
+https://cryptocesar.herokuapp.com/api/message
